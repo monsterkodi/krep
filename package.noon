@@ -1,0 +1,23 @@
+name          krep
+version       0.1.0
+description   search files, but more colorful than grep
+author        monsterkodi
+license       Unlicense
+bin
+              krep  ./bin/krep
+repository
+              type  git
+              url   git://github.com/monsterkodi/krep
+main          js/krep.js
+preferGlobal  true
+keywords
+              grep
+              search
+              commandline
+              coffeescript
+              ansi
+              color
+              colors
+dependencies
+              kxk   ^0.278.1
+              klor  ^0.21.0
