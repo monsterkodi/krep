@@ -8,6 +8,23 @@
 
 { childp, slash, karg, klog, kstr, fs, _ } = require 'kxk'
 
+▸doc 'krep'
+
+    Search for text in files. Similar to `grep` or `ag` but way more colorful 😋
+        
+    ```coffeescript
+    
+    npm install -g krep
+    
+    krep string    # search recursively in the current directory for 'string' in coffee, js, json and noon files
+        
+    krep string .. # same as above, but in the parent directory
+    
+    krep .. string # dito
+    
+    krep -h        # for more options
+    ```
+
 kolor = require './kolor'
 klor  = require 'klor'
 
@@ -36,7 +53,7 @@ krep
 version      #{require("#{__dirname}/../package.json").version}
 """
 
-if args.path == '.' and args.strings.length  
+if args.path == '.' and args.strings.length
     if slash.exists args.strings[0]
         args.path = args.strings.shift()
     else if slash.exists args.strings[-1]

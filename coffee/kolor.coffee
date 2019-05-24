@@ -6,6 +6,19 @@
 000   000   0000000   0000000   0000000   000   000
 ###
 
+▸doc 'kolor'
+
+    A merge of [colorette](https://github.com/jorgebucaran/colorette) and [ansi-256-colors](https://github.com/jbnicolai/ansi-256-colors)
+    
+    It exports a bunch of functions that wrap a string in 256 color ansi codes.
+    
+    `r g b c m y w` + [1..8] for foreground colors 
+    `R G B C M Y W` + [1..8] for background colors
+        
+    ```coffeescript
+    log kolor.y8 'bright yellow' + kolor.R1 'on dark red'
+    ```
+
 exports.map =
     'punct':                            'w3'
     'punct this':                       'b3'
