@@ -6,19 +6,6 @@
 000   000   0000000   0000000   0000000   000   000
 ###
 
-▸doc 'kolor'
-
-    A merge of [colorette](https://github.com/jorgebucaran/colorette) and [ansi-256-colors](https://github.com/jbnicolai/ansi-256-colors)
-    
-    It exports a bunch of functions that wrap a string in 256 color ansi codes.
-    
-    `r g b c m y w` + [1..8] for foreground colors 
-    `R G B C M Y W` + [1..8] for background colors
-        
-    ```coffeescript
-    log kolor.y8 'bright yellow' + kolor.R1 'on dark red'
-    ```
-
 exports.map =
     'punct':                            'w3'
     'punct this':                       'b3'
@@ -170,16 +157,25 @@ exports.white         = init 37  39
 exports.gray          = init 90  39
 
 for bg in BG_COLORS
-    module.exports[bg] = eval bg
+    exports[bg] = eval bg
     for bi in [1..8]
         bn = bg+bi
-        module.exports[bn] = B256 eval bn
+        exports[bn] = B256 eval bn
 
 for fg in FG_COLORS
-    module.exports[fg] = eval fg
+    exports[fg] = eval fg
     for i in [1..8]
-        module.exports[fg+String(i)] = F256 eval fg+String(i)
+        exports[fg+String(i)] = F256 eval fg+String(i)
 
+exports.globalize = ->
+    
+    for fg in FG_COLORS    
+        for i in [1..8]
+            fn = fg+String(i)
+            bn = fn.toUpperCase()
+            global[fn] = exports[fn]
+            global[bn] = exports[bn]
+        
 if require.main == module
 
     reset = '\x1b[0m'

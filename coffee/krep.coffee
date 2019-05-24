@@ -8,25 +8,10 @@
 
 { childp, slash, karg, klog, kstr, fs, _ } = require 'kxk'
 
-▸doc 'krep'
-
-    Search for text in files. Similar to `grep` or `ag` but way more colorful 😋
-        
-    ```coffeescript
-    
-    npm install -g krep
-    
-    krep string    # search recursively in the current directory for 'string' in coffee, js, json and noon files
-        
-    krep string .. # same as above, but in the parent directory
-    
-    krep .. string # dito
-    
-    krep -h        # for more options
-    ```
-
 kolor = require './kolor'
 klor  = require 'klor'
+
+kolor.globalize()
 
 #  0000000   00000000    0000000    0000000
 # 000   000  000   000  000        000
@@ -101,21 +86,33 @@ ignoreDir = (p) ->
 # 0000000   00000000  000   000  000   000   0000000  000   000  
 
 NEWLINE = /\r?\n/
+
 search = (paths) ->
     
-    regexp = new RegExp "(" + args.strings.map((s)->kstr.escapeRegexp(s)).join('|') + ")", 'g'
+    regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
 
     paths.forEach (path) ->
         
         if slash.isDir path
             
             dir = slash.resolve path
+            
             if not ignoreDir dir
+                
                 search fs.readdirSync(dir).map (p) -> slash.join dir, p
             
         else if slash.isText path
+            
             file = slash.resolve path
+            
             if not ignoreFile file
+                
+                if args.header
+                    rel = slash.relative file, process.cwd()
+                    log ''
+                    log W1 g3 ' ▸ ' + slash.dirname(rel) + '/' + y6 slash.base(rel) + y2 '.' + slash.ext(rel) + ' '
+                    log ''
+                
                 text = slash.readText file
                 lines = text.split NEWLINE
                 
@@ -137,7 +134,7 @@ output = (rngs, number) ->
     c = 0
     clrzd = ''
     if args.numbers
-        clrzd += kolor.w2("#{number}") + kolor.w1 ':'
+        clrzd += w2("#{number}") + w1 ':'
     for i in [0...rngs.length]
         while c < rngs[i].start 
             c++
