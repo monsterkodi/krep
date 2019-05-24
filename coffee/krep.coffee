@@ -75,8 +75,10 @@ ignoreDir = (p) ->
     
     return false if p == args.path
     base = slash.basename p
+    ext  = slash.ext p
     return true if base[0] == '.'
     return true if base == 'node_modules'
+    return true if ext  == 'app'
     false
                 
 #  0000000  00000000   0000000   00000000    0000000  000   000  
@@ -107,13 +109,16 @@ search = (paths) ->
             
             if not ignoreFile file
                 
-                if args.header
-                    rel = slash.relative file, process.cwd()
-                    log ''
-                    log W1 g3 ' ▸ ' + slash.dirname(rel) + '/' + y6 slash.base(rel) + y2 '.' + slash.ext(rel) + ' '
-                    log ''
+                header = false
+                printHeader = ->
+                    header = true
+                    if args.header
+                        rel = slash.relative file, process.cwd()
+                        log ''
+                        log W1 g3 ' ▸ ' + slash.dirname(rel) + '/' + y6 slash.base(rel) + y2 '.' + slash.ext(rel) + ' '
+                        log ''
                 
-                text = slash.readText file
+                text  = slash.readText file
                 lines = text.split NEWLINE
                 
                 rngs = klor.dissect lines, 'coffee'
@@ -121,6 +126,7 @@ search = (paths) ->
                 for index in [0...lines.length]
                     line = lines[index]
                     if line.search(regexp) >= 0
+                        printHeader() if not header
                         output rngs[index], index+1
 
 #  0000000   000   000  000000000  00000000   000   000  000000000  
