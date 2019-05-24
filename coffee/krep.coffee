@@ -21,19 +21,20 @@ kolor.globalize()
 
 args = karg """
 krep
-    strings   . ? text to search for              . **
-    path      . ? file or folder to search in     . = |.|
-    coffee    . ? search coffeescript files       . = true
-    noon      . ? search noon files               . = true
-    js        . ? search javascript files         . = true
-    json      . ? search json files               . = true  . - J
-    header    . ? print file headers              . = true  . - H
-    recurse   . ? recurse into subdirs            . = true  . - R
-    numbers   . ? prefix with line numbers        . = false . - N
-    regexp    . ? strings are regexp patterns     . = false
-    dot       . ? search dot files                . = false
-    any       . ? search all text files           . = false
-    debug                                         . = false . - D
+    strings   . ? text to search for                . **
+    path      . ? file or folder to search in       . = |.|
+    ext       . ? search only files with extension  . = ||
+    coffee    . ? search coffeescript files         . = true
+    noon      . ? search noon files                 . = true
+    js        . ? search javascript files           . = true
+    json      . ? search json files                 . = true  . - J
+    header    . ? print file headers                . = true  . - H
+    recurse   . ? recurse into subdirs              . = true  . - R
+    numbers   . ? prefix with line numbers          . = false . - N
+    regexp    . ? strings are regexp patterns       . = false
+    dot       . ? search dot files                  . = false
+    any       . ? search all text files             . = false
+    debug                                           . = false . - D
 
 version      #{require("#{__dirname}/../package.json").version}
 """
@@ -63,6 +64,9 @@ ignoreFile = (p) ->
         return true if base.toLowerCase().startsWith 'ntuser'
     
     return false if p == args.path
+    if args.ext
+        log ext != args.ext, ext, args.ext
+        return ext != args.ext
     return true if base[0] == '.' and not args.dot
     return false if args.any
     return false if args.js     and ext == 'js'
