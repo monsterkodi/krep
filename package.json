@@ -1,7 +1,7 @@
 {
   "name": "krep",
-  "version": "0.1.0",
-  "description": "search files, but more colorful than grep",
+  "version": "0.2.0",
+  "description": "searches in files, but more colorful than grep",
   "author": "monsterkodi",
   "license": "Unlicense",
   "bin": {
@@ -19,11 +19,10 @@
     "commandline",
     "coffeescript",
     "ansi",
-    "color",
     "colors"
   ],
   "dependencies": {
-    "kxk": "^0.278.1",
-    "klor": "^0.21.0"
+    "klor": "^0.21.0",
+    "kxk": "^0.278.1"
   }
 }

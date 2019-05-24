@@ -8,8 +8,8 @@
 
 { childp, slash, karg, klog, kstr, fs, _ } = require 'kxk'
 
-klor = require 'klor'
-# ansi = require 'ansi-256-colors'
+kolor = require './kolor'
+klor  = require 'klor'
 
 #  0000000   00000000    0000000    0000000
 # 000   000  000   000  000        000
@@ -64,11 +64,61 @@ ignoreDir = (p) ->
         return true if base == 'node_modules'
     false
     
-colorize = (chunk) -> chunk.match
+colormap =
+    'punct':                            'w3'
+    'punct comment':                    'w2' 
+    'punct comment triple':             'w2' 
+    'punct regexp start':               'm8' 
+    'punct regexp end':                 'm8' 
+    'punct regexp':                     'm2'
+    'punct semver':                     'r2' 
+    'punct escape regexp':              'm1'
+    'punct string single':              'g1' 
+    'punct string double':              'g2' 
+    'punct string double triple':       'g2' 
+    'punct string interpolation start': 'g1'
+    'punct string interpolation end':   'g1'
+    'punct dictionary':                 'y8' 
+    'punct property':                   'y1' 
+    'punct range':                      'b4' 
+    'punct function':                   'r1'
+    'punct function tail':              'b4'
+    'punct function head':              'b4'
+    'string single':                    'g4' 
+    'string double':                    'g6' 
+    'string double triple':             'g6' 
+    'nil':                              'm2'
+    'obj':                              'y5' 
+    'text':                             'w8' 
+    'text regexp':                      'm6'
+    'require':                          'w3' 
+    'keyword':                          'b8' 
+    'number':                           'b7' 
+    'semver':                           'r5' 
+    'module':                           'y6' 
+    'property':                         'y6' 
+    'dictionary key':                   'y8' 
+    'function call':                    'r5' 
+    'function':                         'r4' 
+    'comment':                          'w3'
+    'comment header':                   ['g1', 'G1']
+    'comment triple header':            ['g2', 'G2']
     
-output = (input) ->
+colorize = (chunk) -> 
+
+    if cn = colormap[chunk.value]
+        if cn instanceof Array
+            v = chunk.match
+            for c in cn
+                v = kolor[c] v
+            return v
+        else
+            return kolor[cn] chunk.match
+    log '>>'+chunk.value+'<<'
+    chunk.match
     
-    rngs = klor.ranges input, 'coffee'
+output = (input, rngs) ->
+    
     c = 0
     line = ''
     for i in [0...rngs.length]
@@ -102,12 +152,15 @@ search = (paths) ->
             
             file = slash.resolve path
             if not ignoreFile file
-                # log 'file', file if args.debug
                 text = slash.readText file
                 lines = text.split NEWLINE
-                for line in lines
+                
+                rngs = klor.dissect lines, 'coffee'
+                
+                for index in [0...lines.length]
+                    line = lines[index]
                     if line.search(regexp) >= 0
-                        output line
+                        output line, rngs[index]
             
 # 00     00   0000000   000  000   000
 # 000   000  000   000  000  0000  000
