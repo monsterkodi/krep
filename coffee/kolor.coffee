@@ -6,6 +6,82 @@
 000   000   0000000   0000000   0000000   000   000
 ###
 
+exports.map =
+    'punct':                            'w3'
+    'punct this':                       'b3'
+    'punct comment':                    'w1' 
+    'punct comment triple':             'w1' 
+    'punct regexp start':               'm8' 
+    'punct regexp end':                 'm8' 
+    'punct regexp':                     'm2'
+    'punct regexp triple':              'm2'
+    'punct semver':                     'r2' 
+    'punct escape regexp':              'm1'
+    'punct escape regexp triple':       'm1'
+    'punct string single':              'g1' 
+    'punct string single triple':       'g1' 
+    'punct string double':              'g2' 
+    'punct string double triple':       'g2' 
+    'punct string interpolation start': 'g1'
+    'punct string interpolation end':   'g1'
+    'punct dictionary':                 'y8' 
+    'punct property':                   'y1' 
+    'punct range':                      'b4' 
+    'punct method':                     'r2'
+    'punct function':                   'r1'
+    'punct function tail':              ['b6' 'bold' 'B1']
+    'punct function head':              ['b6' 'bold' 'B1']
+    'punct function bound tail':        ['r5' 'bold' 'R1']
+    'punct function bound head':        ['r5' 'bold' 'R1']
+    'punct h1':                         'y1'
+    'text h1':                          'y4'
+    'punct h2':                         'r1'
+    'text h2':                          'r4'
+    'punct h3':                         'b3'
+    'text h3':                          'b8'
+    'punct h4':                         'b2'
+    'text h4':                          'b6'
+    'punct h5':                         'b1'
+    'text h5':                          'b5'
+    'string single':                    'g3' 
+    'string single triple':             'g3' 
+    'string double':                    'g4' 
+    'string double triple':             'g4' 
+    'nil':                              'm2'
+    'obj':                              'y5' 
+    'text':                             'w8' 
+    'text this':                        'b8' 
+    'text regexp':                      'm6'
+    'text regexp triple':               'm6'
+    'require':                          'w3' 
+    'keyword':                          'b8' 
+    'number':                           'b7' 
+    'number hex':                       'c3' 
+    'number float':                     'r7' 
+    'punct number float':               'r3' 
+    'semver':                           'r5' 
+    'module this':                      'y2' 
+    'module':                           'y6' 
+    'class':                            'y5' 
+    'property':                         'y6' 
+    'dictionary key':                   'y8' 
+    'punct function call':              'r2' 
+    'function call this':               'r2' 
+    'function call':                    'r5' 
+    'function':                         'r4' 
+    'method':                           'r6'
+    'punct bold':                       'b1'
+    'text bold':                        'b7'
+    'text code':                        'b8'
+    'punct code':                       'b1' 
+    'punct code triple':                'b1' 
+    'punct meta':                       'g1' 
+    'meta':                             'g4' 
+    'comment':                          'w3'
+    'comment triple':                   'w4'
+    'comment header':                   ['g1' 'G1']
+    'comment triple header':            ['g2' 'G2']
+
 f_ = (r, g, b) -> '\x1b[38;5;' + (16 + 36*r + 6*g + b) + 'm'
 b_ = (r, g, b) -> '\x1b[48;5;' + (16 + 36*r + 6*g + b) + 'm'
 
@@ -51,8 +127,8 @@ w6 = w 5*3; W6 = W 5*3+2;
 w7 = w 6*3; W7 = W 6*3+2;
 w8 = w 7*3; W8 = W 7*3+2;
 
-FG_COLORS = ['r', 'g', 'b', 'c', 'm', 'y', 'w']
-BG_COLORS = ['R', 'M', 'B', 'Y', 'G', 'C', 'W']
+FG_COLORS = ['r' 'g' 'b' 'c' 'm' 'y' 'w']
+BG_COLORS = ['R' 'M' 'B' 'Y' 'G' 'C' 'W']
 
 rawInit = (open, close, searchRegex, replaceValue) ->
     (s) -> open + (~(s += "").indexOf(close, 4) and s.replace(searchRegex, replaceValue) or s) + close
