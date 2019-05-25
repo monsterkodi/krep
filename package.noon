@@ -1,5 +1,5 @@
 name          krep
-version       0.8.0
+version       0.9.0
 description   searches in files, but more colorful than grep
 author        monsterkodi
 license       Unlicense

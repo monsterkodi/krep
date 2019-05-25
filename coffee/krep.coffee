@@ -6,7 +6,7 @@
 000   000  000   000  00000000  000      
 ###
 
-{ slash, karg, klog, kstr, fs, _ } = require 'kxk'
+{ slash, karg, klog, kstr, valid, fs, _ } = require 'kxk'
 
 kolor = require './kolor'
 klor  = require 'klor'
@@ -46,6 +46,9 @@ if args.path == '.' and args.strings.length
         args.path = args.strings.pop()
         
 args.path = slash.resolve args.path
+
+if valid args.__ignored
+    args.strings = args.strings.concat args.__ignored
 
 # 000   0000000   000   000   0000000   00000000   00000000  
 # 000  000        0000  000  000   000  000   000  000       
@@ -142,7 +145,8 @@ output = (rngs, number) ->
     c = 0
     clrzd = ''
     if args.numbers
-        clrzd += w2("#{number}") + w1 ':'
+        numstr = String number
+        clrzd += w1(numstr) + _.pad '', 4-numstr.length
     for i in [0...rngs.length]
         while c < rngs[i].start 
             c++
