@@ -6,7 +6,7 @@
 000   000  000   000  00000000  000      
 ###
 
-{ childp, slash, karg, klog, kstr, fs, _ } = require 'kxk'
+{ slash, karg, klog, kstr, fs, _ } = require 'kxk'
 
 kolor = require './kolor'
 klor  = require 'klor'
@@ -64,9 +64,7 @@ ignoreFile = (p) ->
         return true if base.toLowerCase().startsWith 'ntuser'
     
     return false if p == args.path
-    if args.ext
-        log ext != args.ext, ext, args.ext
-        return ext != args.ext
+    if args.ext then return ext != args.ext
     return true if base[0] == '.' and not args.dot
     return false if args.any
     return false if args.js     and ext == 'js'
