@@ -3,7 +3,7 @@
 Search for text in files. Similar to `grep` or `ag` but way more colorful 😋
     
 ```coffeescript
-krep string    # search recursively in the current directory for 'string' in coffee, js, json and noon files
+krep string    # search recursively in the current directory for 'string'
     
 krep string .. # same as above, but in the parent directory
 
@@ -13,6 +13,8 @@ krep file      # prints the whole file
 
 krep -h        # for more options
 ```
+
+
 
 ### kolor
 

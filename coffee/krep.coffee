@@ -96,7 +96,10 @@ NEWLINE = /\r?\n/
 
 search = (paths) ->
     
-    regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
+    if args.regexp
+        regexp = new RegExp "(" + args.strings.join('|') + ")", 'g'
+    else
+        regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
 
     paths.forEach (path) ->
         
