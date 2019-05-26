@@ -243,7 +243,7 @@ colorize = (chunk) ->
     else if chunk.value.startsWith 'punct'
         w1 chunk.match
     else
-        log ">>>#{chunk.value}"
+        # log ">>>#{chunk.value}"
         chunk.match
     
 klog 'args:' args if args.debug
