@@ -14,8 +14,6 @@ krep file      # prints the whole file
 krep -h        # for more options
 ```
 
-
-
 ### kolor
 
 A merge of [colorette](https://github.com/jorgebucaran/colorette) and [ansi-256-colors](https://github.com/jbnicolai/ansi-256-colors)

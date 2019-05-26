@@ -130,6 +130,8 @@ search = (paths) ->
                 
                 for index in [0...lines.length]
                     line = lines[index]
+                    if line.startsWith '//# sourceMappingURL'
+                        continue
                     if dump
                         printHeader() if not header
                         output rngs[index], index+1, []
