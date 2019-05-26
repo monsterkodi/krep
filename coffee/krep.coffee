@@ -91,10 +91,13 @@ NEWLINE = /\r?\n/
 
 search = (paths) ->
     
-    if args.regexp
-        regexp = new RegExp "(" + args.strings.join('|') + ")", 'g'
+    if args.strings.length
+        if args.regexp
+            regexp = new RegExp "(" + args.strings.join('|') + ")", 'g'
+        else
+            regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
     else
-        regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
+        dump = true
 
     paths.forEach (path) ->
         
@@ -123,16 +126,20 @@ search = (paths) ->
                 
                 text  = slash.readText file
                 lines = text.split NEWLINE
-                rngs  = klor.dissect lines, 'coffee'
+                rngs  = klor.dissect lines, slash.ext file
                 
                 for index in [0...lines.length]
                     line = lines[index]
-                    if line.search(regexp) >= 0
+                    if dump
                         printHeader() if not header
-                        highlights = highlightRanges line, regexp
-                        ▸assert highlights.length
-                        sliced = sliceRanges rngs[index], highlights
-                        output sliced, index+1, highlights
+                        output rngs[index], index+1, []
+                    else
+                        if line.search(regexp) >= 0
+                            printHeader() if not header
+                            highlights = highlightRanges line, regexp
+                            ▸assert highlights.length
+                            sliced = sliceRanges rngs[index], highlights
+                            output sliced, index+1, highlights
 
 # 000   000  000   0000000   000   000  000      000   0000000   000   000  000000000
 # 000   000  000  000        000   000  000      000  000        000   000     000   
@@ -192,7 +199,7 @@ output = (rngs, number, highlights) ->
         
     c = 0
     h = 0
-    highlight = (s) -> 
+    highlight = (s) ->
         if h < highlights.length
             if c >= highlights[h].start and c <= highlights[h].end
                 return inverse s
@@ -230,3 +237,4 @@ colorize = (chunk) ->
 klog 'args:' args if args.debug
 
 search [args.path]
+log ''

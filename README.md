@@ -26,5 +26,6 @@ Exports a bunch of functions that wrap a string in 256 color ansi codes.
 [R G B C M Y W][1..8] background colors
     
 ```coffeescript
-log kolor.y8 'bright yellow' + kolor.R1 'on dark red'
+kolor.globalize()
+log y8 'bright yellow' + R1 'on dark red'
 ```
