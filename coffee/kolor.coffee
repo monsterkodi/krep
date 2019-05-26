@@ -140,6 +140,12 @@ for fg in FG_COLORS
     for i in [1..8]
         exports[fg+i] = F256 exports[fg] i
 
+#  0000000   000       0000000   0000000     0000000   000      000  0000000  00000000  
+# 000        000      000   000  000   000  000   000  000      000     000   000       
+# 000  0000  000      000   000  0000000    000000000  000      000    000    0000000   
+# 000   000  000      000   000  000   000  000   000  000      000   000     000       
+#  0000000   0000000   0000000   0000000    000   000  0000000  000  0000000  00000000  
+
 exports.globalize = ->
     
     for fg in FG_COLORS
@@ -147,6 +153,8 @@ exports.globalize = ->
             bg = fg.toUpperCase()
             global[fg+i] = exports[fg+i] 
             global[bg+i] = exports[bg+i] 
+            for n in ['underline''bold''italic''inverse']
+                global[n] = exports[n]
         
 if require.main == module
 

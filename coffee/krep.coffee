@@ -13,12 +13,6 @@ klor  = require 'klor'
 
 kolor.globalize()
 
-#  0000000   00000000    0000000    0000000
-# 000   000  000   000  000        000
-# 000000000  0000000    000  0000  0000000
-# 000   000  000   000  000   000       000
-# 000   000  000   000   0000000   0000000
-
 args = karg """
 krep
     strings   . ? text to search for                . **
@@ -36,12 +30,13 @@ krep
     any       . ? search all text files             . = false
     debug                                           . = false . - D
 
-version      #{require("#{__dirname}/../package.json").version}
+version       #{require("#{__dirname}/../package.json").version}
 """
 
 if args.path == '.' and args.strings.length
     if slash.exists args.strings[0]
-        args.path = args.strings.shift()
+        if args.strings.length > 1 or slash.isFile args.strings[0]
+            args.path = args.strings.shift()
     else if slash.exists args.strings[-1]
         args.path = args.strings.pop()
         
@@ -123,39 +118,95 @@ search = (paths) ->
                     if args.header
                         rel = slash.relative file, process.cwd()
                         log ''
-                        log W1 g3 ' ▸ ' + slash.dirname(rel) + '/' + y6 slash.base(rel) + y2 '.' + slash.ext(rel) + ' '
+                        log W1 y5 ' ▸ ' + g2 slash.dirname(rel) + '/' + y5 slash.base(rel) + y1 '.' + slash.ext(rel) + ' '
                         log ''
                 
                 text  = slash.readText file
                 lines = text.split NEWLINE
-                
-                rngs = klor.dissect lines, 'coffee'
+                rngs  = klor.dissect lines, 'coffee'
                 
                 for index in [0...lines.length]
                     line = lines[index]
                     if line.search(regexp) >= 0
                         printHeader() if not header
-                        output rngs[index], index+1
+                        highlights = highlightRanges line, regexp
+                        ▸assert highlights.length
+                        sliced = sliceRanges rngs[index], highlights
+                        output sliced, index+1, highlights
 
+# 000   000  000   0000000   000   000  000      000   0000000   000   000  000000000
+# 000   000  000  000        000   000  000      000  000        000   000     000   
+# 000000000  000  000  0000  000000000  000      000  000  0000  000000000     000   
+# 000   000  000  000   000  000   000  000      000  000   000  000   000     000   
+# 000   000  000   0000000   000   000  0000000  000   0000000   000   000     000   
+
+highlightRanges = (line, regexp) ->
+    
+    ranges = []
+    while m = regexp.exec line
+        ranges.push start:m.index, end:m.index+m[0].length-1
+    ranges
+    
+sliceRanges = (ranges, highlights) ->
+
+    h = 0
+    i = 0
+    while i < ranges.length
+        range = ranges[i]
+        while h < highlights.length and range.start > highlights[h].end
+            h++
+        
+        if h >= highlights.length then return ranges
+
+        split = 0
+        if range.start < highlights[h].start <= range.start+range.length
+            split  = highlights[h].start - range.start
+        else if range.start <= highlights[h].end < range.start+range.length
+            split = highlights[h].end - range.start + 1
+
+        if split
+            before = _.clone range
+            after  = _.clone range
+            before.match  = range.match[...split]
+            before.length = before.match.length
+            after.match   = range.match[split...]
+            after.length  = after.match.length
+            after.start   = range.start + before.length
+            ranges.splice i, 1, before, after
+        i++
+    ranges
+            
 #  0000000   000   000  000000000  00000000   000   000  000000000  
 # 000   000  000   000     000     000   000  000   000     000     
 # 000   000  000   000     000     00000000   000   000     000     
 # 000   000  000   000     000     000        000   000     000     
 #  0000000    0000000      000     000         0000000      000     
 
-output = (rngs, number) ->
+output = (rngs, number, highlights) ->
     
-    c = 0
     clrzd = ''
+    
     if args.numbers
         numstr = String number
         clrzd += w1(numstr) + _.pad '', 4-numstr.length
+        
+    c = 0
+    h = 0
+    highlight = (s) -> 
+        if h < highlights.length
+            if c >= highlights[h].start and c <= highlights[h].end
+                return inverse s
+            while h < highlights.length and c > highlights[h].end
+                h++
+        s
+    
     for i in [0...rngs.length]
         while c < rngs[i].start 
+            clrzd += highlight ' '
             c++
-            clrzd += ' '
-        clrzd += colorize rngs[i]
+        clrzd += highlight colorize rngs[i]
         c += rngs[i].match.length
+        
     log clrzd
 
 #  0000000   0000000   000       0000000   00000000   000  0000000  00000000  
@@ -176,12 +227,6 @@ colorize = (chunk) ->
             return kolor[cn] chunk.match
     chunk.match
     
-# 00     00   0000000   000  000   000
-# 000   000  000   000  000  0000  000
-# 000000000  000000000  000  000 0 000
-# 000 0 000  000   000  000  000  0000
-# 000   000  000   000  000  000   000
-
 klog 'args:' args if args.debug
 
 search [args.path]
