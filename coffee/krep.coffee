@@ -8,9 +8,9 @@
 
 { slash, karg, klog, kstr, valid, fs, _ } = require 'kxk'
 
-kolor = require './kolor'
 klor  = require 'klor'
 
+kolor = klor.kolor
 kolor.globalize()
 
 args = karg """
@@ -44,6 +44,8 @@ args.path = slash.resolve args.path
 
 if valid args.__ignored
     args.strings = args.strings.concat args.__ignored
+    
+# log args
 
 # 000   0000000   000   000   0000000   00000000   00000000  
 # 000  000        0000  000  000   000  000   000  000       
@@ -234,7 +236,15 @@ colorize = (chunk) ->
             return v
         else
             return kolor[cn] chunk.match
-    chunk.match
+    if chunk.value.endsWith 'file'
+        w8 chunk.match
+    else if chunk.value.endsWith 'ext'
+        w2 chunk.match
+    else if chunk.value.startsWith 'punct'
+        w1 chunk.match
+    else
+        log ">>>#{chunk.value}"
+        chunk.match
     
 klog 'args:' args if args.debug
 
