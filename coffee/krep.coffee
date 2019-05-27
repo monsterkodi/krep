@@ -6,7 +6,7 @@
 000   000  000   000  00000000  000      
 ###
 
-{ slash, karg, klog, kstr, valid, fs, _ } = require 'kxk'
+{ slash, noon, karg, klog, kstr, valid, fs, _ } = require 'kxk'
 
 klor  = require 'klor'
 
@@ -16,18 +16,18 @@ kolor.globalize()
 args = karg """
 krep
     strings   . ? text to search for                . **
-    path      . ? file or folder to search in       . = |.|
-    ext       . ? search only files with extension  . = ||
-    coffee    . ? search coffeescript files         . = true
-    noon      . ? search noon files                 . = true
-    js        . ? search javascript files           . = true
-    json      . ? search json files                 . = true  . - J
     header    . ? print file headers                . = true  . - H
     recurse   . ? recurse into subdirs              . = true  . - R
+    path      . ? file or folder to search in       . = |.|
+    ext       . ? search only files with extension  . = ||
+    coffee    . ? search only coffeescript files    . = false
+    noon      . ? search only noon files            . = false
+    js        . ? search only javascript files      . = false
+    cpp       . ? search only cpp files             . = false . - C
+    json      . ? search only json files            . = false . - J
     numbers   . ? prefix with line numbers          . = false . - N
     regexp    . ? strings are regexp patterns       . = false
     dot       . ? search dot files                  . = false
-    any       . ? search all text files             . = false
     debug                                           . = false . - D
 
 version       #{require("#{__dirname}/../package.json").version}
@@ -45,6 +45,12 @@ args.path = slash.resolve args.path
 if valid args.__ignored
     args.strings = args.strings.concat args.__ignored
     
+hasExt = ['coffee''noon''json''js''cpp']
+    .map (t) -> args[t]
+    .filter (b) -> b
+    .length > 0
+    
+if not hasExt then args.any = true
 # log args
 
 # 000   0000000   000   000   0000000   00000000   00000000  
@@ -70,6 +76,7 @@ ignoreFile = (p) ->
     return false if args.js     and ext == 'js'
     return false if args.json   and ext == 'json'
     return false if args.noon   and ext == 'noon'
+    return false if args.cpp    and ext in ['cpp', 'hpp', 'h']
     return false if args.coffee and ext in ['koffee''coffee']
     return true
 
@@ -227,7 +234,7 @@ output = (rngs, number, highlights) ->
 #  0000000   0000000   0000000   0000000   000   000  000  0000000  00000000  
 
 colorize = (chunk) -> 
-
+    
     if cn = kolor.map[chunk.value]
         if cn instanceof Array
             v = chunk.match
@@ -236,17 +243,19 @@ colorize = (chunk) ->
             return v
         else
             return kolor[cn] chunk.match
+            
+    log ">>>#{chunk.value}"
+    
     if chunk.value.endsWith 'file'
         w8 chunk.match
     else if chunk.value.endsWith 'ext'
-        w2 chunk.match
+        w3 chunk.match
     else if chunk.value.startsWith 'punct'
-        w1 chunk.match
+        w2 chunk.match
     else
-        # log ">>>#{chunk.value}"
         chunk.match
     
-klog 'args:' args if args.debug
+klog noon.stringify(args, colors:true) if args.debug
 
 search [args.path]
 log ''
