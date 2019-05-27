@@ -51,7 +51,6 @@ hasExt = ['coffee''noon''json''js''cpp']
     .length > 0
     
 if not hasExt then args.any = true
-# log args
 
 # 000   0000000   000   000   0000000   00000000   00000000  
 # 000  000        0000  000  000   000  000   000  000       
@@ -233,6 +232,8 @@ output = (rngs, number, highlights) ->
 # 000       000   000  000      000   000  000   000  000   000     000       
 #  0000000   0000000   0000000   0000000   000   000  000  0000000  00000000  
 
+LI = /(\sli\d\s|\sh\d\s)/
+
 colorize = (chunk) -> 
     
     if cn = kolor.map[chunk.value]
@@ -244,16 +245,23 @@ colorize = (chunk) ->
         else
             return kolor[cn] chunk.match
             
-    log ">>>#{chunk.value}"
     
     if chunk.value.endsWith 'file'
         w8 chunk.match
     else if chunk.value.endsWith 'ext'
         w3 chunk.match
     else if chunk.value.startsWith 'punct'
-        w2 chunk.match
+        if LI.test chunk.value
+            colorize match:chunk.match, value:chunk.value.replace LI, ' '
+        else
+            # log ">>>#{chunk.value}<<< #{chunk.match}"
+            w2 chunk.match
     else
-        chunk.match
+        if LI.test chunk.value
+            colorize match:chunk.match, value:chunk.value.replace LI, ' '
+        else
+            # log ">>>#{chunk.value}<<< #{chunk.match}"
+            chunk.match
     
 klog noon.stringify(args, colors:true) if args.debug
 
