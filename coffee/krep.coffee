@@ -8,7 +8,6 @@
 
 fs    = require 'fs'
 slash = require 'kxk/js/slash'
-noon  = require 'noon'
 karg  = require 'karg'
 klor  = require 'klor'
 kstr  = require 'kxk/js/str'
@@ -267,7 +266,7 @@ colorize = (chunk) ->
             # log ">>>#{chunk.value}<<< #{chunk.match}"
             chunk.match
     
-klog noon.stringify(args, colors:true) if args.debug
+klog require('noon').stringify(args, colors:true) if args.debug
 
 search [args.path]
 log ''
