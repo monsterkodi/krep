@@ -6,9 +6,13 @@
 000   000  000   000  00000000  000      
 ###
 
-{ slash, noon, karg, klog, kstr, valid, fs, _ } = require 'kxk'
-
+fs    = require 'fs'
+slash = require 'kxk/js/slash'
+noon  = require 'noon'
+karg  = require 'karg'
 klor  = require 'klor'
+kstr  = require 'kxk/js/str'
+klog  = require 'kxk/js/log'
 
 kolor = klor.kolor
 kolor.globalize()
@@ -42,7 +46,7 @@ if args.path == '.' and args.strings.length
         
 args.path = slash.resolve args.path
 
-if valid args.__ignored
+if args.__ignored?.length
     args.strings = args.strings.concat args.__ignored
     
 hasExt = ['coffee''noon''json''js''cpp']
@@ -182,8 +186,8 @@ sliceRanges = (ranges, highlights) ->
             split = highlights[h].end - range.start + 1
 
         if split
-            before = _.clone range
-            after  = _.clone range
+            before = Object.assign {}, range
+            after  = Object.assign {}, range
             before.match  = range.match[...split]
             before.length = before.match.length
             after.match   = range.match[split...]
@@ -205,7 +209,7 @@ output = (rngs, number, highlights) ->
     
     if args.numbers
         numstr = String number
-        clrzd += w1(numstr) + _.pad '', 4-numstr.length
+        clrzd += w1(numstr) + kstr.rpad '', 4-numstr.length
         
     c = 0
     h = 0
