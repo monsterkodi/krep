@@ -7,7 +7,7 @@
 ###
 
 fs    = require 'fs'
-slash = require 'kxk/js/slash'
+slash = require 'kslash'
 karg  = require 'karg'
 klor  = require 'klor'
 kstr  = require 'kxk/js/str'
@@ -21,6 +21,7 @@ krep
     strings   . ? text to search for                . **
     header    . ? print file headers                . = true  . - H
     recurse   . ? recurse into subdirs              . = true  . - R
+    depth     . ? recursion depth                   . = ∞     . - D    
     path      . ? file or folder to search in       . = |.|
     ext       . ? search only files with extension  . = ||
     coffee    . ? search only coffeescript files    . = false
@@ -31,7 +32,7 @@ krep
     numbers   . ? prefix with line numbers          . = false . - N
     regexp    . ? strings are regexp patterns       . = false
     dot       . ? search dot files                  . = false
-    debug                                           . = false . - D
+    debug                                           . = false . - X
 
 version       #{require("#{__dirname}/../package.json").version}
 """
@@ -42,6 +43,10 @@ if args.path == '.' and args.strings.length
             args.path = args.strings.shift()
     else if slash.exists args.strings[-1]
         args.path = args.strings.pop()
+
+if args.depth == '∞' then args.depth = Infinity
+else args.depth = Math.max 0, parseInt args.depth
+if Number.isNaN args.depth then args.depth = 0
         
 args.path = slash.resolve args.path
 
@@ -100,7 +105,7 @@ ignoreDir = (p) ->
 
 NEWLINE = /\r?\n/
 
-search = (paths) ->
+search = (paths, depth=0) ->
     
     if args.strings.length
         if args.regexp
@@ -109,16 +114,16 @@ search = (paths) ->
             regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
     else
         dump = true
-
+        
     paths.forEach (path) ->
         
         if slash.isDir path
             
             dir = slash.resolve path
             
-            if not ignoreDir dir
+            if ((args.recurse and depth < args.depth) or depth == 0) and not ignoreDir dir
                 
-                search fs.readdirSync(dir).map (p) -> slash.join dir, p
+                search fs.readdirSync(dir).map((p) -> slash.join dir, p), depth+1
             
         else if slash.isText path
             
