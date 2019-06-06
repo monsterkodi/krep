@@ -1,8 +1,8 @@
-## krep
+![krep](bin/krep.png)
 
 Search for text in files. Similar to `grep` or `ag` but *way* more **colorful** 😋
 
-![krep](bin/shot.png)
+![shot](bin/shot.png)
 
 ![usage](bin/usage.png)
 

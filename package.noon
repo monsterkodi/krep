@@ -1,10 +1,13 @@
 name          krep
-version       0.24.0
+version       0.25.0
 description   searches in files, but more colorful than grep
 author        monsterkodi
 license       Unlicense
 bin
               krep  ./bin/krep
+files
+              ./bin/krep
+              js/*
 repository
               type  git
               url   git://github.com/monsterkodi/krep
