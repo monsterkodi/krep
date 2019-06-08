@@ -15,7 +15,7 @@ krep string .. # same as above, but in the parent directory
 
 krep .. string # dito
 
-krep file      # prints the whole file
+krep two words # searches for 'two' and 'words'
 
-krep -h        # for more options
+krep file      # prints the whole file
 ```

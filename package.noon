@@ -1,5 +1,5 @@
 name          krep
-version       0.28.0
+version       0.29.0
 description   searches in files, but more colorful than grep
 author        monsterkodi
 license       Unlicense
@@ -16,8 +16,6 @@ preferGlobal  true
 keywords
               grep
               search
-              commandline
-              coffeescript
               ansi
               colors
 dependencies
