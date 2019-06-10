@@ -1,6 +1,6 @@
 {
   "name": "krep",
-  "version": "0.31.0",
+  "version": "0.32.0",
   "description": "searches in files, but more colorful than grep",
   "author": "monsterkodi",
   "license": "Unlicense",
@@ -25,9 +25,9 @@
     "colors"
   ],
   "dependencies": {
-    "klor": ">=1.0.1",
-    "kslash": ">=1.11.3",
-    "kstr": ">=0.2.0",
-    "noon": ">=2.12.1"
+    "klor": "^1.0.1",
+    "kslash": "^1.11.3",
+    "kstr": "^0.3.0",
+    "noon": "^2.13.0"
   }
 }
