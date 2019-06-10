@@ -1,6 +1,6 @@
 {
   "name": "krep",
-  "version": "0.30.0",
+  "version": "0.31.0",
   "description": "searches in files, but more colorful than grep",
   "author": "monsterkodi",
   "license": "Unlicense",
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git://github.com/monsterkodi/krep"
   },
-  "homepage": "https://www.npmjs.com/packages/krep",
+  "homepage": "https://www.npmjs.com/package/krep",
   "preferGlobal": true,
   "keywords": [
     "grep",
