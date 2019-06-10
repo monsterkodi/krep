@@ -1,6 +1,6 @@
 {
   "name": "krep",
-  "version": "0.29.0",
+  "version": "0.29.1",
   "description": "searches in files, but more colorful than grep",
   "author": "monsterkodi",
   "license": "Unlicense",
@@ -15,6 +15,7 @@
     "type": "git",
     "url": "git://github.com/monsterkodi/krep"
   },
+  "homepage": "https://www.npmjs.com/packages/krep",
   "main": "js/krep.js",
   "preferGlobal": true,
   "keywords": [
@@ -24,9 +25,9 @@
     "colors"
   ],
   "dependencies": {
-    "noon": ">=2.10.0",
-    "kslash": ">=1.10.0",
-    "klor": ">=0.56.0",
-    "kstr": ">=0.1.0"
+    "klor": "^1.0.1",
+    "kslash": ">=1.11.3",
+    "kstr": ">=0.2.0",
+    "noon": ">=2.12.1"
   }
 }

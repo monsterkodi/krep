@@ -19,3 +19,16 @@ krep two words # searches for 'two' and 'words'
 
 krep file      # prints the whole file
 ```
+
+
+[![npm package][npm-image]][npm-url] 
+[![downloads][downloads-image]][downloads-url] 
+[![Dependencies Status][david-image]][david-url]
+
+[npm-image]:https://img.shields.io/npm/v/sds.svg
+[npm-url]:http://npmjs.org/package/krep
+[david-image]:https://david-dm.org/monsterkodi/krep/status.svg
+[david-url]:https://david-dm.org/monsterkodi/krep
+[downloads-image]:https://img.shields.io/npm/dm/krep.svg
+[downloads-url]:http://npmjs.org/package/krep
+
