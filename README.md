@@ -25,7 +25,7 @@ krep file      # prints the whole file
 [![downloads][downloads-image]][downloads-url] 
 [![Dependencies Status][david-image]][david-url]
 
-[npm-image]:https://img.shields.io/npm/v/sds.svg
+[npm-image]:https://img.shields.io/npm/v/krep.svg
 [npm-url]:http://npmjs.org/package/krep
 [david-image]:https://david-dm.org/monsterkodi/krep/status.svg
 [david-url]:https://david-dm.org/monsterkodi/krep
