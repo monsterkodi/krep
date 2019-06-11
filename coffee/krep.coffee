@@ -25,6 +25,9 @@ krep
     ext       . ? search only files with extension  . = ||
     coffee    . ? search only coffeescript files    . = false
     noon      . ? search only noon files            . = false
+    styl      . ? search only styl files            . = false . - S
+    pug       . ? search only pug files             . = false . - P
+    md        . ? search only md files              . = false
     js        . ? search only javascript files      . = false
     cpp       . ? search only cpp files             . = false . - C
     json      . ? search only json files            . = false . - J
@@ -52,7 +55,7 @@ args.path = slash.resolve args.path
 if args.__ignored?.length
     args.strings = args.strings.concat args.__ignored
     
-hasExt = ['coffee''noon''json''js''cpp']
+hasExt = ['coffee''noon''json''js''md''cpp''pug''styl']
     .map (t) -> args[t]
     .filter (b) -> b
     .length > 0
@@ -82,6 +85,9 @@ ignoreFile = (p) ->
     return false if args.js     and ext == 'js'
     return false if args.json   and ext == 'json'
     return false if args.noon   and ext == 'noon'
+    return false if args.md     and ext == 'md'
+    return false if args.pug    and ext == 'pug'
+    return false if args.styl   and ext == 'styl'
     return false if args.cpp    and ext in ['cpp', 'hpp', 'h']
     return false if args.coffee and ext in ['koffee''coffee']
     return true

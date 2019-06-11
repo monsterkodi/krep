@@ -30,5 +30,5 @@ krep file      # prints the whole file
 [david-image]:https://david-dm.org/monsterkodi/krep/status.svg
 [david-url]:https://david-dm.org/monsterkodi/krep
 [downloads-image]:https://img.shields.io/npm/dm/krep.svg
-[downloads-url]:http://npmjs.org/package/krep
+[downloads-url]:https://www.npmtrends.com/krep
 
