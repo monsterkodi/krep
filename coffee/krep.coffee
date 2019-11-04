@@ -259,21 +259,21 @@ colorize = (chunk) ->
             return kolor[cn] chunk.match
             
     
-    if chunk.value.endsWith 'file'
+    if chunk.clss.endsWith 'file'
         w8 chunk.match
-    else if chunk.value.endsWith 'ext'
+    else if chunk.clss.endsWith 'ext'
         w3 chunk.match
-    else if chunk.value.startsWith 'punct'
-        if LI.test chunk.value
-            colorize match:chunk.match, value:chunk.value.replace LI, ' '
+    else if chunk.clss.startsWith 'punct'
+        if LI.test chunk.clss
+            colorize match:chunk.match, clss:chunk.clss.replace LI, ' '
         else
-            # log ">>>#{chunk.value}<<< #{chunk.match}"
+            # log ">>>#{chunk.clss}<<< #{chunk.match}"
             w2 chunk.match
     else
-        if LI.test chunk.value
-            colorize match:chunk.match, value:chunk.value.replace LI, ' '
+        if LI.test chunk.clss
+            colorize match:chunk.match, clss:chunk.clss.replace LI, ' '
         else
-            # log ">>>#{chunk.value}<<< #{chunk.match}"
+            # log ">>>#{chunk.clss}<<< #{chunk.match}"
             chunk.match
     
 if args.debug

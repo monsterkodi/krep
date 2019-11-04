@@ -1,5 +1,5 @@
 name          krep
-version       0.34.0
+version       0.35.0
 description   searches in files, but more colorful than grep
 author        monsterkodi
 license       Unlicense
@@ -20,7 +20,7 @@ keywords
               ansi
               colors
 dependencies
-              klor    ^1.8.0
+              klor    ^2.0.0
               kslash  ^1.23.0
-              kstr    ^0.9.0
+              kstr    ^0.11.0
               noon    ^3.0.0
