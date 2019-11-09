@@ -249,7 +249,7 @@ LI = /(\sli\d\s|\sh\d\s)/
 
 colorize = (chunk) -> 
     
-    if cn = kolor.map[chunk.value]
+    if cn = kolor.map[chunk.clss]
         if cn instanceof Array
             v = chunk.match
             for c in cn
@@ -267,13 +267,11 @@ colorize = (chunk) ->
         if LI.test chunk.clss
             colorize match:chunk.match, clss:chunk.clss.replace LI, ' '
         else
-            # log ">>>#{chunk.clss}<<< #{chunk.match}"
             w2 chunk.match
     else
         if LI.test chunk.clss
             colorize match:chunk.match, clss:chunk.clss.replace LI, ' '
         else
-            # log ">>>#{chunk.clss}<<< #{chunk.match}"
             chunk.match
     
 if args.debug
