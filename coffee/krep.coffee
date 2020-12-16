@@ -218,7 +218,7 @@ output = (rngs, number, highlights) ->
     
     if args.numbers
         numstr = String number
-        clrzd += w1(numstr) + kstr.rpad '', 4-numstr.length
+        clrzd += w2(numstr) + kstr.rpad '', 4-numstr.length
         
     c = 0
     h = 0
