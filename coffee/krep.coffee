@@ -34,6 +34,7 @@ krep
     numbers   . ? prefix with line numbers          . = false . - N
     regexp    . ? strings are regexp patterns       . = false
     dot       . ? search dot files                  . = false
+    stdin     . ? read from stdin                   . = false . - i
     debug                                           . = false . - X
 
 version       #{require("#{__dirname}/../package.json").version}
@@ -317,7 +318,7 @@ process.stdin.on 'readable' ->
 process.stdin.on 'end' -> 
 
 startSearch = ->
-    if not pipeMode
+    if not pipeMode and not args.stdin
         search [args.path]
         log ''
         process.exit 0
