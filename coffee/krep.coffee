@@ -110,16 +110,16 @@ ignoreDir = (p) ->
 
 NEWLINE = /\r?\n/
 
-search = (paths, depth=0) ->
-    
-    if args.strings.length
-        if args.regexp
-            regexp = new RegExp "(" + args.strings.join('|') + ")", 'g'
-        else
-            regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
+if args.strings.length
+    if args.regexp
+        regexp = new RegExp "(" + args.strings.join('|') + ")", 'g'
     else
-        dump = true
-        
+        regexp = new RegExp "(" + args.strings.map((s) -> kstr.escapeRegexp(s)).join('|') + ")", 'g'
+else
+    dump = true
+
+search = (paths, depth=0) ->
+            
     paths.forEach (path) ->
         
         if slash.isDir path
@@ -278,5 +278,48 @@ if args.debug
     noon = require 'noon'
     log noon.stringify args, colors:true
 
-search [args.path]
-log ''
+# 00000000   000  00000000   00000000  
+# 000   000  000  000   000  000       
+# 00000000   000  00000000   0000000   
+# 000        000  000        000       
+# 000        000  000        00000000  
+
+pipeMode = false
+pipeType = null
+process.stdin.on 'readable' ->
+    pipeMode = true 
+    if not pipeType
+        if      args.coffee then pipeType = 'coffee'
+        else if args.noon   then pipeType = 'noon'
+        else if args.json   then pipeType = 'json'
+        else if args.cpp    then pipeType = 'cpp'
+        else if args.js     then pipeType = 'js'
+        else                     pipeType = 'txt'
+        
+    if text = process.stdin.read()?.toString 'utf8'
+        lines = text.split NEWLINE
+        rngs  = klor.dissect lines, pipeType
+        
+        for index in [0...lines.length]
+            line = lines[index]
+            if line.startsWith '//# sourceMappingURL'
+                continue
+
+            if dump
+                output rngs[index], index+1, []
+            else
+                if line.search(regexp) >= 0
+                    highlights = highlightRanges line, regexp
+                    ▸assert highlights.length
+                    sliced = sliceRanges rngs[index], highlights
+                    output sliced, index+1, highlights
+        
+process.stdin.on 'end' -> 
+
+startSearch = ->
+    if not pipeMode
+        search [args.path]
+        log ''
+        process.exit 0
+    
+setTimeout startSearch, 10
