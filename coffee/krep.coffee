@@ -11,6 +11,7 @@ slash = require 'kslash'
 karg  = require 'karg'
 klor  = require 'klor'
 kstr  = require 'kstr'
+tty   = require 'tty'
 
 kolor = klor.kolor
 
@@ -288,10 +289,8 @@ if args.debug
 # 000        000  000        000       
 # 000        000  000        00000000  
 
-pipeMode = false
 pipeType = null
 process.stdin.on 'readable' ->
-    pipeMode = true 
     if not pipeType
         if      args.coffee then pipeType = 'coffee'
         else if args.noon   then pipeType = 'noon'
@@ -320,10 +319,8 @@ process.stdin.on 'readable' ->
         
 process.stdin.on 'end' -> 
 
-startSearch = ->
-    if not pipeMode and not args.stdin
-        search [args.path]
-        log ''
-        process.exit 0
+if process.stdin.isTTY and not args.stdin
+    search [args.path]
+    log ''
+    process.exit 0
     
-setTimeout startSearch, 10
