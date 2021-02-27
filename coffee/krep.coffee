@@ -13,7 +13,6 @@ klor  = require 'klor'
 kstr  = require 'kstr'
 
 kolor = klor.kolor
-kolor.globalize()
 
 args = karg """
 krep
@@ -24,21 +23,24 @@ krep
     path      . ? file or folder to search in       . = |.|
     ext       . ? search only files with extension  . = ||
     coffee    . ? search only coffeescript files    . = false
+    js        . ? search only javascript files      . = false
     noon      . ? search only noon files            . = false
     styl      . ? search only styl files            . = false . - S
     pug       . ? search only pug files             . = false . - P
     md        . ? search only md files              . = false
-    js        . ? search only javascript files      . = false
     cpp       . ? search only cpp files             . = false . - C
     json      . ? search only json files            . = false . - J
     numbers   . ? prefix with line numbers          . = false . - N
     regexp    . ? strings are regexp patterns       . = false
     dot       . ? search dot files                  . = false
     stdin     . ? read from stdin                   . = false . - i
+    kolor     . ? colorize output                   . = true
     debug                                           . = false . - X
 
 version       #{require("#{__dirname}/../package.json").version}
 """
+
+kolor.globalize args.kolor
 
 if args.path == '.' and args.strings.length
     if slash.exists args.strings[0]
@@ -254,11 +256,12 @@ colorize = (chunk) ->
         if cn instanceof Array
             v = chunk.match
             for c in cn
-                v = kolor[c] v
+                # v = kolor[c] v
+                v = global[c] v
             return v
         else
-            return kolor[cn] chunk.match
-            
+            # return kolor[cn] chunk.match
+            return global[cn] chunk.match
     
     if chunk.clss.endsWith 'file'
         w8 chunk.match
