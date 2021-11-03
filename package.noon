@@ -20,7 +20,8 @@ keywords
               ansi
               colors
 dependencies
+              karg    ^1.23.0
               klor    ^2.16.1
-              kslash  ^1.30.0
+              kslash  ^2.3.0
               kstr    ^0.13.0
               noon    ^3.1.0

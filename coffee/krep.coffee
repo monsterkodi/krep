@@ -36,12 +36,19 @@ krep
     dot       . ? search dot files                  . = false
     stdin     . ? read from stdin                   . = false . - i
     kolor     . ? colorize output                   . = true
+    replace   . ? replace found strings             . = 🔥💥👎💥🔥
     debug                                           . = false . - X
 
 version       #{require("#{__dirname}/../package.json").version}
 """
 
 kolor.globalize args.kolor
+
+if args.replace != '🔥💥👎💥🔥'
+    
+    if typeof args.replace != 'string'
+        error R4 y5 " no replace string provided! won't replace anything! use \"\" to replace with empty string. "
+        args.replace = '🔥💥👎💥🔥'
 
 if args.path == '.' and args.strings.length
     if slash.exists args.strings[0]
@@ -155,8 +162,7 @@ search = (paths, depth=0) ->
                 
                 for index in [0...lines.length]
                     line = lines[index]
-                    if line.startsWith '//# sourceMappingURL'
-                        continue
+                    if line.startsWith '//# sourceMappingURL' then continue
                     if dump
                         printHeader() if not header
                         output rngs[index], index+1, []
@@ -167,7 +173,14 @@ search = (paths, depth=0) ->
                             ▸assert highlights.length
                             sliced = sliceRanges rngs[index], highlights
                             output sliced, index+1, highlights
-
+                            
+                if regexp and not dump and args.replace != '🔥💥👎💥🔥'
+                    for index in [0...lines.length]
+                        line = lines[index]
+                        if line.startsWith '//# sourceMappingURL' then continue
+                        lines[index] = line.replace regexp, args.replace
+                    slash.writeText file, lines.join '\n'
+                            
 # 000   000  000   0000000   000   000  000      000   0000000   000   000  000000000
 # 000   000  000  000        000   000  000      000  000        000   000     000   
 # 000000000  000  000  0000  000000000  000      000  000  0000  000000000     000   
@@ -283,6 +296,11 @@ if args.debug
     noon = require 'noon'
     log noon.stringify args, colors:true
 
+if not args.stdin
+    search [args.path]
+    log ''
+    process.exit 0
+    
 # 00000000   000  00000000   00000000  
 # 000   000  000  000   000  000       
 # 00000000   000  00000000   0000000   
@@ -318,9 +336,4 @@ process.stdin.on 'readable' ->
                     output sliced, index+1, highlights
         
 process.stdin.on 'end' -> 
-
-if process.stdin.isTTY and not args.stdin
-    search [args.path]
-    log ''
-    process.exit 0
     
