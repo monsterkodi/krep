@@ -36,7 +36,7 @@ krep
     dot       . ? search dot files                  . = false
     stdin     . ? read from stdin                   . = false . - i
     kolor     . ? colorize output                   . = true
-    replace   . ? replace found strings             . = 🔥💥👎💥🔥
+    replace   . ? replace found strings             . = 🔥💥👎💥🔥 . - Y
     debug                                           . = false . - X
 
 version       #{require("#{__dirname}/../package.json").version}
