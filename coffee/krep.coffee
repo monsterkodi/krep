@@ -270,11 +270,9 @@ colorize = (chunk) ->
         if cn instanceof Array
             v = chunk.match
             for c in cn
-                # v = kolor[c] v
                 v = global[c] v
             return v
         else
-            # return kolor[cn] chunk.match
             return global[cn] chunk.match
     
     if chunk.clss.endsWith 'file'
