@@ -8,7 +8,7 @@ bin
 main            js/krep.js
 files
                 bin/krep
-                js/*
+                js/krep.js
 repository
                 type  git
                 url   git://github.com/monsterkodi/krep
