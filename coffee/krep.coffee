@@ -17,38 +17,41 @@ kolor = klor.kolor
 
 args = karg """
 krep
-    strings   . ? text to search for                . **
-    header    . ? print file headers                . = true  . - H
-    recurse   . ? recurse into subdirs              . = true  . - R
-    depth     . ? recursion depth                   . = ∞     . - D    
-    path      . ? file or folder to search in       . = |.|
-    ext       . ? search only files with extension  . = ||
-    coffee    . ? search only coffeescript files    . = false
-    js        . ? search only javascript files      . = false
-    noon      . ? search only noon files            . = false
-    styl      . ? search only styl files            . = false . - S
-    pug       . ? search only pug files             . = false . - P
-    md        . ? search only md files              . = false
-    cpp       . ? search only cpp files             . = false . - C
-    json      . ? search only json files            . = false . - J
-    numbers   . ? prefix with line numbers          . = false . - N
-    regexp    . ? strings are regexp patterns       . = false
-    dot       . ? search dot files                  . = false
-    stdin     . ? read from stdin                   . = false . - i
-    kolor     . ? colorize output                   . = true
-    replace   . ? replace found strings             . = 🔥💥👎💥🔥 . - Y
-    debug                                           . = false . - X
+    strings      . ? text to search for                 . **
+    header       . ? print file headers                 . = true  . - H
+    recurse      . ? recurse into subdirs               . = true  . - R
+    depth        . ? recursion depth                    . = ∞     . - D    
+    path         . ? file or folder to search in        . = |.|
+    ext          . ? search only files with extension   . = ||
+    coffee       . ? search only coffeescript files     . = false
+    js           . ? search only javascript files       . = false
+    noon         . ? search only noon files             . = false
+    styl         . ? search only styl files             . = false . - S
+    pug          . ? search only pug files              . = false . - P
+    md           . ? search only md files               . = false
+    cpp          . ? search only cpp files              . = false . - C
+    json         . ? search only json files             . = false . - J
+    numbers      . ? prefix with line numbers           . = false . - N
+    regexp       . ? strings are regexp patterns        . = false
+    dot          . ? search dot files                   . = false
+    stdin        . ? read from stdin                    . = false . - i
+    kolor        . ? colorize output                    . = true
+    replace      . ? 🔥replace matches                              . - -
+    remove       . ? 🔥remove matches                     . = false . - -
+    removelines  . ? 🔥remove lines containing matches    . = false . - -
+    debug                                                 . = false . - X
 
 version       #{require("#{__dirname}/../package.json").version}
 """
 
 kolor.globalize args.kolor
 
-if args.replace != '🔥💥👎💥🔥'
+if args.replace and (args.remove or args.removelines) or args.remove and args.removelines
     
-    if typeof args.replace != 'string'
-        error R4 y5 " no replace string provided! won't replace anything! use \"\" to replace with empty string. "
-        args.replace = '🔥💥👎💥🔥'
+    error R4 y5 " 🔥💥 multiple replace options provided! won't replace anything! 💥🔥"
+    delete args.replace
+    delete args.remove
+    delete args.removelines
 
 if args.path == '.' and args.strings.length
     if slash.exists args.strings[0]
@@ -174,12 +177,25 @@ search = (paths, depth=0) ->
                             sliced = sliceRanges rngs[index], highlights
                             output sliced, index+1, highlights
                             
-                if regexp and not dump and args.replace != '🔥💥👎💥🔥'
-                    for index in [0...lines.length]
-                        line = lines[index]
-                        if line.startsWith '//# sourceMappingURL' then continue
-                        lines[index] = line.replace regexp, args.replace
-                    slash.writeText file, lines.join '\n'
+                if regexp and not dump 
+                    if args.replace or args.remove
+                        for index in [0...lines.length]
+                            line = lines[index]
+                            if line.startsWith '//# sourceMappingURL' then continue
+                            if args.remove then replaceWith = '' else replaceWith = args.replace
+                            lines[index] = line.replace regexp, replaceWith
+                        slash.writeText file, lines.join '\n'
+                    else if args.removelines
+                        newLines = []
+                        for index in [0...lines.length]
+                            line = lines[index]
+                            if line.startsWith '//# sourceMappingURL' 
+                                newLines.push line
+                                continue
+                            if line.search(regexp) >= 0
+                                continue
+                            newLines.push line
+                        slash.writeText file, newLines.join '\n'
                             
 # 000   000  000   0000000   000   000  000      000   0000000   000   000  000000000
 # 000   000  000  000        000   000  000      000  000        000   000     000   
@@ -296,7 +312,7 @@ if args.debug
 
 if not args.stdin
     search [args.path]
-    log ''
+    # log ''
     process.exit 0
     
 # 00000000   000  00000000   00000000  

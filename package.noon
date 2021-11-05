@@ -1,27 +1,33 @@
-name          krep
-version       1.0.0
-description   searches in files, but more colorful than grep
-author        monsterkodi
-license       Unlicense
+name            krep
+version         1.1.0
+description     searches in files, but more colorful than grep
+author          monsterkodi
+license         Unlicense
 bin
-              krep  ./bin/krep
-main          js/krep.js
+                krep  ./bin/krep
+main            js/krep.js
 files
-              bin/krep
-              js/*
+                bin/krep
+                js/*
 repository
-              type  git
-              url   git://github.com/monsterkodi/krep
-homepage      https://www.npmjs.com/package/krep
-preferGlobal  true
+                type  git
+                url   git://github.com/monsterkodi/krep
+scripts
+                test  ./node_modules/.bin/mocha -c --require koffee/js/register ./coffee/test.coffee
+homepage        https://www.npmjs.com/package/krep
+preferGlobal    true
 keywords
-              grep
-              search
-              ansi
-              colors
+                grep
+                search
+                ansi
+                colors
 dependencies
-              karg    ^1.23.0
-              klor    ^2.16.1
-              kslash  ^2.3.0
-              kstr    ^0.13.0
-              noon    ^3.1.0
+                karg    ^1.26.0
+                klor    ^2.16.1
+                kslash  ^2.4.0
+                kstr    ^0.13.0
+                noon    ^3.1.0
+devDependencies
+                chai    ^4.3.4
+                mocha   ^9.1.3
+                koffee  ^1.14.0
