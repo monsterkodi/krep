@@ -23,6 +23,7 @@ krep
     depth        . ? recursion depth                    . = ∞     . - D    
     path         . ? file or folder to search in        . = |.|
     ext          . ? search only files with extension   . = ||
+    kode         . ? search only kode files             . = false
     coffee       . ? search only coffeescript files     . = false
     js           . ? search only javascript files       . = false
     noon         . ? search only noon files             . = false
@@ -35,7 +36,7 @@ krep
     regexp       . ? strings are regexp patterns        . = false
     dot          . ? search dot files                   . = false
     stdin        . ? read from stdin                    . = false . - i
-    kolor        . ? colorize output                    . = true
+    color        . ? colorize output                    . = true  . - -
     replace      . ? 🔥replace matches                              . - -
     remove       . ? 🔥remove matches                     . = false . - -
     removelines  . ? 🔥remove lines containing matches    . = false . - -
@@ -44,7 +45,7 @@ krep
 version       #{require("#{__dirname}/../package.json").version}
 """
 
-kolor.globalize args.kolor
+kolor.globalize args.color
 
 if args.replace and (args.remove or args.removelines) or args.remove and args.removelines
     
@@ -69,7 +70,7 @@ args.path = slash.resolve args.path
 if args.__ignored?.length
     args.strings = args.strings.concat args.__ignored
     
-hasExt = ['coffee''noon''json''js''md''cpp''pug''styl']
+hasExt = ['kode''coffee''noon''json''js''md''cpp''pug''styl']
     .map (t) -> args[t]
     .filter (b) -> b
     .length > 0
@@ -102,6 +103,7 @@ ignoreFile = (p) ->
     return false if args.md     and ext == 'md'
     return false if args.pug    and ext == 'pug'
     return false if args.styl   and ext == 'styl'
+    return false if args.kode   and ext == 'kode'
     return false if args.cpp    and ext in ['cpp', 'hpp', 'h']
     return false if args.coffee and ext in ['koffee''coffee']
     return true
@@ -173,16 +175,21 @@ search = (paths, depth=0) ->
                         if line.search(regexp) >= 0
                             printHeader() if not header
                             highlights = highlightRanges line, regexp
-                            ▸assert highlights.length
+                            # assert highlights.length
                             sliced = sliceRanges rngs[index], highlights
                             output sliced, index+1, highlights
                             
+                            if args.replace or args.remove
+                                if not line.startsWith '//# sourceMappingURL'
+                                    replaceWith = if args.remove then '' else args.replace
+                                    log line.replace regexp, replaceWith
+                                
                 if regexp and not dump 
                     if args.replace or args.remove
                         for index in [0...lines.length]
                             line = lines[index]
                             if line.startsWith '//# sourceMappingURL' then continue
-                            if args.remove then replaceWith = '' else replaceWith = args.replace
+                            replaceWith = if args.remove then '' else args.replace
                             lines[index] = line.replace regexp, replaceWith
                         slash.writeText file, lines.join '\n'
                     else if args.removelines
@@ -232,7 +239,7 @@ sliceRanges = (ranges, highlights) ->
             after  = Object.assign {}, range
             before.match  = range.match[...split]
             before.length = before.match.length
-            after.match   = range.match[split...]
+            after.match   = range.match[split..]
             after.length  = after.match.length
             after.start   = range.start + before.length
             ranges.splice i, 1, before, after
@@ -251,7 +258,7 @@ output = (rngs, number, highlights) ->
     
     if args.numbers
         numstr = String number
-        clrzd += w2(numstr) + kstr.rpad '', 4-numstr.length
+        clrzd += w2(numstr) + kstr.rpad '' 4-numstr.length
         
     c = 0
     h = 0
@@ -312,7 +319,6 @@ if args.debug
 
 if not args.stdin
     search [args.path]
-    # log ''
     process.exit 0
     
 # 00000000   000  00000000   00000000  
@@ -325,6 +331,7 @@ pipeType = null
 process.stdin.on 'readable' ->
     if not pipeType
         if      args.coffee then pipeType = 'coffee'
+        else if args.kode   then pipeType = 'kode'
         else if args.noon   then pipeType = 'noon'
         else if args.json   then pipeType = 'json'
         else if args.cpp    then pipeType = 'cpp'
@@ -345,7 +352,7 @@ process.stdin.on 'readable' ->
             else
                 if line.search(regexp) >= 0
                     highlights = highlightRanges line, regexp
-                    ▸assert highlights.length
+                    # assert highlights.length
                     sliced = sliceRanges rngs[index], highlights
                     output sliced, index+1, highlights
         

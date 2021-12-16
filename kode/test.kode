@@ -6,95 +6,92 @@
 000   000  000   000  00000000  000                 000     00000000  0000000      000     
 ###
 
-chai   = require 'chai'
 kstr   = require 'kstr'
 slash  = require 'kslash'
 childp = require 'child_process'
-fs     = require 'fs-extra'
-chai.should()
-expect = chai.expect
+fs     = slash.fs
 
 krep = (args) -> kstr.stripAnsi childp.execSync "#{__dirname}/../bin/krep #{args}", encoding:'utf8'
 
-describe 'krep' ->
+▸ krep
 
-    it 'works' -> 
+    ▸ works
 
-        k = krep "chai"
-        k.should.include "test.coffee"
-        k.should.include "chai   = require 'chai'"
+        krep "slash" ▸ (a) -> 
+            "test.kode" in a and
+            "slash  = require 'kslash'" in a
         
-    it 'finds' ->
+    ▸ finds
         
-        k = krep "noon"
-        k.should.include "test.coffee"
-        k.should.include "krep.coffee"
-        k.should.include "krep.js"
-        k.should.include "package.js"
-        k.should.include "package.noon"
+        krep "noon" ▸ (a) ->
+            " ▸ kode/test.kode \n"  in a and
+            " ▸ kode/krep.kode \n"  in a and
+            " ▸ js/krep.js \n"      in a and
+            " ▸ ./package.json \n"  in a and
+            " ▸ ./package.noon \n"  in a
         
-    it 'filters' ->
+    ▸ filters
         
-        k = krep "-c noon"
-        k.should.include "test.coffee"
-        k.should.include "krep.coffee"
-        k.should.not.include "krep.js"
-        k.should.not.include "package.js"
-        k.should.include "package.noon"
+        krep "-k noon" ▸ (a) ->
+            " ▸ kode/test.kode \n"          in a and
+            " ▸ kode/krep.kode \n"          in a and
+            " ▸ js/krep.js #{'\n'}"     not in a and
+            " ▸ ./package.json #{'\n'}" not in a and
+            " ▸ ./package.noon #{'\n'}" not in a
 
-        k = krep "-j noon"
-        k.should.not.include "test.coffee"
-        k.should.not.include "krep.coffee"
-        k.should.include "krep.js"
-        k.should.include "package.js"
+        krep "-j noon" ▸ (a) ->
+            " ▸ kode/test.kode #{'\n'}" not in a and
+            " ▸ kode/krep.kode #{'\n'}" not in a and
+            " ▸ js/krep.js \n"              in a and
+            " ▸ js/test.js \n"              in a
 
-    it 'replaces' ->
+    ▸ replaces
         
         slash.writeText 'test.txt' 'a bBb c d'
         krep "-p test.txt bBb --replace xXx"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'a xXx c d'
+        r ▸ 'a xXx c d'
 
         slash.writeText 'test.txt' 'a bBb c d'
         krep "-p test.txt bBb --replace \"\""
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'a bBb c d'
+        r ▸ 'a bBb c d'
 
         slash.writeText 'test.txt' 'a bBb c d'
         krep "-p test.txt bBb --replace"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'a bBb c d'
+        r ▸ 'a bBb c d'
 
         slash.writeText 'test.txt' 'a bBbBbBb c d'
         krep "-p test.txt bBb --replace x"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'a xBx c d'
+        r ▸ 'a xBx c d'
         
-    it 'removes' ->
+    ▸ removes
         
         slash.writeText 'test.txt' 'a bBb c d'
         krep "-p test.txt bBb --remove"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'a  c d'
+        r ▸ 'a  c d'
 
         slash.writeText 'test.txt' 'a bBbBbBb c d'
         krep "-p test.txt bBb --remove"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'a B c d'
+        r ▸ 'a B c d'
 
-    it 'removes lines' ->
+    ▸ removes lines
         
         slash.writeText 'test.txt' 'a bBb c d'
         krep "-p test.txt bBb --removelines"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql ''
+        r ▸ ''
 
         slash.writeText 'test.txt' """
             a bBb c
@@ -104,5 +101,5 @@ describe 'krep' ->
         krep "-p test.txt bBb --removelines"
         r = slash.readText 'test.txt'
         fs.removeSync 'test.txt'
-        r.should.eql 'c d e'
+        r ▸ 'c d e'
         
