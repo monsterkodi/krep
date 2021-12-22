@@ -1,8 +1,8 @@
-// monsterkodi/kode 0.130.0
+// monsterkodi/kode 0.181.0
 
 var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}, list: function (l) {return (l != null ? typeof l.length === 'number' ? l : [] : [])}}
 
-var fs, slash, karg, klor, kstr, tty, kolor, args, _70_17_, hasExt, ignoreFile, ignoreDir, NEWLINE, regexp, dump, search, highlightRanges, sliceRanges, output, LI, colorize, noon, pipeType
+var args, colorize, dump, fs, hasExt, highlightRanges, ignoreDir, ignoreFile, karg, klor, kolor, kstr, LI, NEWLINE, noon, output, pipeType, regexp, search, slash, sliceRanges, tty, _70_17_
 
 fs = require('fs')
 slash = require('kslash')
@@ -213,7 +213,7 @@ search = function (paths, depth = 0)
 {
     return paths.forEach(function (path)
     {
-        var dir, file, header, printHeader, text, lines, rngs, index, line, highlights, sliced, replaceWith, newLines
+        var dir, file, header, highlights, index, line, lines, newLines, printHeader, replaceWith, rngs, sliced, text
 
         if (slash.isDir(path))
         {
@@ -248,7 +248,7 @@ search = function (paths, depth = 0)
                 text = slash.readText(file)
                 lines = text.split(NEWLINE)
                 rngs = klor.dissect(lines,slash.ext(file))
-                for (index = 0; index < lines.length; index++)
+                for (var _168_30_ = index = 0, _168_34_ = lines.length; (_168_30_ <= _168_34_ ? index < lines.length : index > lines.length); (_168_30_ <= _168_34_ ? ++index : --index))
                 {
                     line = lines[index]
                     if (line.startsWith('//# sourceMappingURL'))
@@ -289,7 +289,7 @@ search = function (paths, depth = 0)
                 {
                     if (args.replace || args.remove)
                     {
-                        for (index = 0; index < lines.length; index++)
+                        for (var _189_38_ = index = 0, _189_42_ = lines.length; (_189_38_ <= _189_42_ ? index < lines.length : index > lines.length); (_189_38_ <= _189_42_ ? ++index : --index))
                         {
                             line = lines[index]
                             if (line.startsWith('//# sourceMappingURL'))
@@ -304,7 +304,7 @@ search = function (paths, depth = 0)
                     else if (args.removelines)
                     {
                         newLines = []
-                        for (index = 0; index < lines.length; index++)
+                        for (var _197_38_ = index = 0, _197_42_ = lines.length; (_197_38_ <= _197_42_ ? index < lines.length : index > lines.length); (_197_38_ <= _197_42_ ? ++index : --index))
                         {
                             line = lines[index]
                             if (line.startsWith('//# sourceMappingURL'))
@@ -328,7 +328,7 @@ search = function (paths, depth = 0)
 
 highlightRanges = function (line, regexp)
 {
-    var ranges, m
+    var m, ranges
 
     ranges = []
     while (m = regexp.exec(line))
@@ -340,7 +340,7 @@ highlightRanges = function (line, regexp)
 
 sliceRanges = function (ranges, highlights)
 {
-    var h, i, range, split, before, after
+    var after, before, h, i, range, split
 
     h = 0
     i = 0
@@ -382,7 +382,7 @@ sliceRanges = function (ranges, highlights)
 
 output = function (rngs, number, highlights)
 {
-    var clrzd, numstr, c, h, highlight, i
+    var c, clrzd, h, highlight, i, numstr
 
     clrzd = ''
     if (args.numbers)
@@ -407,7 +407,7 @@ output = function (rngs, number, highlights)
         }
         return s
     }
-    for (i = 0; i < rngs.length; i++)
+    for (var _273_14_ = i = 0, _273_18_ = rngs.length; (_273_14_ <= _273_18_ ? i < rngs.length : i > rngs.length); (_273_14_ <= _273_18_ ? ++i : --i))
     {
         while (c < rngs[i].start)
         {
@@ -423,7 +423,7 @@ LI = /(\sli\d\s|\sh\d\s)/
 
 colorize = function (chunk)
 {
-    var cn, v, c
+    var c, cn, v
 
     if (cn = kolor.map[chunk.clss])
     {
@@ -487,7 +487,7 @@ if (!args.stdin)
 pipeType = null
 process.stdin.on('readable',function ()
 {
-    var text, _341_34_, lines, rngs, index, line, highlights, sliced
+    var highlights, index, line, lines, rngs, sliced, text, _341_34_
 
     if (!pipeType)
     {
@@ -524,7 +524,7 @@ process.stdin.on('readable',function ()
     {
         lines = text.split(NEWLINE)
         rngs = klor.dissect(lines,pipeType)
-        for (index = 0; index < lines.length; index++)
+        for (var _345_22_ = index = 0, _345_26_ = lines.length; (_345_22_ <= _345_26_ ? index < lines.length : index > lines.length); (_345_22_ <= _345_26_ ? ++index : --index))
         {
             line = lines[index]
             if (line.startsWith('//# sourceMappingURL'))

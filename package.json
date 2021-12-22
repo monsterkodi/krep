@@ -1,37 +1,37 @@
 {
-    "name": "krep",
-    "version": "1.2.0",
-    "description": "searches in files, but more colorful than grep",
-    "repository": "github:monsterkodi/krep",
-    "author": "monsterkodi",
-    "license": "Unlicense",
-    "preferGlobal": true,
-    "keywords": [
-        "grep",
-        "search",
-        "ansi",
-        "colors"
-    ],
-    "scripts": {
-        "build": "./node_modules/.bin/kode -Ho js kode/krep.kode",
-        "test": "./node_modules/.bin/kode -t kode/test.kode"
-    },
-    "bin": {
-        "krep": "./bin/krep"
-    },
-    "files": [
-        "bin/krep",
-        "js/krep.js"
-    ],
-    "main": "js/krep.js",
-    "dependencies": {
-        "karg": "monsterkodi/karg",
-        "klor": "monsterkodi/klor",
-        "kslash": "monsterkodi/kslash",
-        "kstr": "monsterkodi/kstr",
-        "noon": "monsterkodi/noon"
-    },
-    "devDependencies": {
-        "kode": "monsterkodi/kode"
-    }
+  "name": "krep",
+  "version": "1.2.0",
+  "description": "searches in files, but more colorful than grep",
+  "repository": "github:monsterkodi/krep",
+  "author": "monsterkodi",
+  "license": "Unlicense",
+  "preferGlobal": true,
+  "keywords": [
+    "grep",
+    "search",
+    "ansi",
+    "colors"
+  ],
+  "scripts": {
+    "build": "./node_modules/.bin/kode -Ho js kode/krep.kode",
+    "test": "./node_modules/.bin/kode -t kode/test.kode"
+  },
+  "bin": {
+    "krep": "./bin/krep"
+  },
+  "files": [
+    "bin/krep",
+    "js/krep.js"
+  ],
+  "main": "js/krep.js",
+  "dependencies": {
+    "karg": "monsterkodi/karg",
+    "klor": "monsterkodi/klor",
+    "kslash": "monsterkodi/kslash",
+    "kstr": "monsterkodi/kstr",
+    "noon": "monsterkodi/noon"
+  },
+  "devDependencies": {
+    "kode": "monsterkodi/kode"
+  }
 }
