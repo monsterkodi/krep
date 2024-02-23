@@ -1,6 +1,8 @@
+// monsterkodi/kode 0.250.0
+
 var _k_ = {in: function (a,l) {return (typeof l === 'string' && typeof a === 'string' && a.length ? '' : []).indexOf.call(l,a) >= 0}}
 
-var kstr, slash, childp, fs, krep, r
+var childp, fs, krep, kstr, r, slash
 
 kstr = require('kstr')
 slash = require('kslash')
@@ -31,7 +33,7 @@ module.exports["krep"] = function ()
     {
         compare(krep("-k noon"),function (a)
         {
-            return _k_.in(" ▸ kode/test.kode \n",a) && _k_.in(" ▸ kode/krep.kode \n",a) && !(_k_.in(` ▸ js/krep.js ${'\n'}`,a)) && !(_k_.in(` ▸ package.json ${'\n'}`,a)) && _k_.in(" ▸ ./package.noon \n",a)
+            return _k_.in(" ▸ kode/test.kode \n",a) && _k_.in(" ▸ kode/krep.kode \n",a) && !(_k_.in(` ▸ js/krep.js ${'\n'}`,a)) && !(_k_.in(` ▸ ./package.json ${'\n'}`,a)) && !(_k_.in(` ▸ ./package.noon ${'\n'}`,a))
         })
         compare(krep("-j noon"),function (a)
         {
@@ -91,4 +93,5 @@ d bBb`)
     })
 }
 module.exports["krep"]._section_ = true
+module.exports._test_ = true
 module.exports

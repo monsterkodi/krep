@@ -1,5 +1,5 @@
 name            krep
-version         1.3.0
+version         1.3.1
 description     searches in files, but more colorful than grep
 repository      github:monsterkodi/krep
 author          monsterkodi
@@ -20,10 +20,10 @@ files
                 js/krep.js
 main            js/krep.js
 dependencies
-                karg    monsterkodi/karg
+                karg    github:monsterkodi/karg
                 klor    github:monsterkodi/klor
-                kslash  monsterkodi/kslash
-                kstr    monsterkodi/kstr
-                noon    monsterkodi/noon
+                kslash  github:monsterkodi/kslash
+                kstr    github:monsterkodi/kstr
+                noon    github:monsterkodi/noon
 devDependencies
-                kode  monsterkodi/kode
+                kode  github:monsterkodi/kode
